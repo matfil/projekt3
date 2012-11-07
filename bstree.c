@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "structures.h"
 
-database* create_record (int key)
+database* createrecord (int key)
 {
   int i, j;
   database* newone;
@@ -33,7 +33,7 @@ database* create_record (int key)
   return newone;
 }
 
-node* create_node (struct database* dane)
+node* createnode (struct database* dane)
 {
   node* newone;
   newone = malloc (sizeof(node));
@@ -44,7 +44,7 @@ node* create_node (struct database* dane)
   return newone;
 }
 
-void add_node (node* element, node* root)
+void addnode (node* element, node* root)
 {
   if (root == NULL)
   {
@@ -62,7 +62,7 @@ void add_node (node* element, node* root)
   {
     if (element->record->index < root->record->index && root->left != NULL)
     {
-      add_node (element, root->left); /* mniejszy i zajęte miejsce
+      addnode (element, root->left); /* mniejszy i zajęte miejsce
                                          lewego syna => zejdź niżej */
     }
     else
@@ -75,7 +75,7 @@ void add_node (node* element, node* root)
       }
       else
       {
-        add_node (element,root->right); /* w przeciwnym przypadku idziemy
+        addnode (element,root->right); /* w przeciwnym przypadku idziemy
                                            głębiej w prawo */
       }
     }
@@ -83,7 +83,7 @@ void add_node (node* element, node* root)
   }
 }
 
-node* tree_search (node* root, int index)
+node* treesearch (node* root, int index)
 {
   if (root->record->index == index || root == NULL)
   {
@@ -91,16 +91,16 @@ node* tree_search (node* root, int index)
   }
   if (index > root->record->index)
   {
-    tree_search (root->right, index);
+    treesearch (root->right, index);
   }
   if (index < root->record->index)
   {
-    tree_search (root->left, index);
+    treesearch (root->left, index);
   }
   return NULL;
 }
 
-void print_tree (node* root)
+void printtree (node* root)
 {
   if (root != NULL)
   {

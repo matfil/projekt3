@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "structures.h"
 
-list* create_element (int a)
+list* createelement (int a)
 {
   list* newone; /* wskaźnik */
   newone = malloc (sizeof(list)); /* przydziel pamięć */
@@ -17,7 +17,7 @@ list* create_element (int a)
   return newone; /* zwróć wskaźnik */
 }
 
-int check_index (list* first, int a) /* sprawdza czy w liście jest
+int checkindex (list* first, int a) /* sprawdza czy w liście jest
                                        element z indexem a*/
 {
   if (first != NULL)
@@ -28,7 +28,7 @@ int check_index (list* first, int a) /* sprawdza czy w liście jest
     }
     else
     {
-      return check_index (first->forward, a);
+      return checkindex (first->forward, a);
     }
   }
   else
@@ -37,19 +37,26 @@ int check_index (list* first, int a) /* sprawdza czy w liście jest
   }
 }
 
-void add_to_list (list* first, list* what)
+void addtolist (list* first, list* what)
 {
+  if (first == NULL)
+  {
+    first = what;
+  }
+  else
+  {
   if (first->forward == NULL)
   {
     first->forward = what;
   }
   else
   {
-    add_to_list (first->forward, what);
+    addtolist (first->forward, what);
+  }
   }
 }
 
-void remove_from_list(list* first, int index)
+void removefromlist(list* first, int index)
 {
   list* a;
   a = NULL;
@@ -64,7 +71,7 @@ void remove_from_list(list* first, int index)
     }
     else
     {
-      remove_from_list(first->forward, index);
+      removefromlist(first->forward, index);
     }
   }
   else

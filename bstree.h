@@ -8,10 +8,11 @@
 #ifndef BSTREE_H_
 #define BSTREE_H_
 
-database* create_record (int key);
-node* create_node (struct database* dane);
-void add_node (node* element, node* root);
-void print_tree (node* root);
+database* createrecord (int key);
+node* createnode (struct database* dane);
+void addnode (node* element, node* root);
+node* treesearch (node* root, int index);
+void printtree (node* root);
 
 
 #endif /* BSTREE_H_ */

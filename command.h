@@ -8,9 +8,9 @@
 #ifndef COMMAND_H_
 #define COMMAND_H_
 
-void print_help();
-int get_command ();
-void do_something ();
+void printhelp();
+int getcommand ();
+void dosomething ();
 
 
 #endif /* COMMAND_H_ */
