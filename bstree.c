@@ -46,6 +46,12 @@ node* create_node (struct database* dane)
 
 void add_node (node* element, node* root)
 {
+  if (root == NULL)
+  {
+    root = element;
+  }
+  else
+  {
   if (element->record->index < root->record->index && root->left == NULL)
   {
     root->left = element; /* mniejszy i wolny lewy syn => element
@@ -73,6 +79,7 @@ void add_node (node* element, node* root)
                                            głębiej w prawo */
       }
     }
+  }
   }
 }
 

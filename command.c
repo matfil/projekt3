@@ -47,7 +47,7 @@ int get_command ()
 		{
 			return 6;
 		}
-		if (inp[i] == 's' && inp[i+1] == 'h' && inp[i+2] == 'o' && inp[i+3] == 'w')
+		if (inp[i] == 'e' && inp[i+1] == 'x' && inp[i+2] == 'i' && inp[i+3] == 't')
 		{
 			return 7;
 		}

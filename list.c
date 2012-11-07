@@ -13,6 +13,7 @@ list* create_element (int a)
   list* newone; /* wskaźnik */
   newone = malloc (sizeof(list)); /* przydziel pamięć */
   newone->index = a; /* ustaw wartość */
+  newone->forward = NULL; /* następnego nie ma (jeszcze) */
   return newone; /* zwróć wskaźnik */
 }
 
