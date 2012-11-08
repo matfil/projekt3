@@ -8,9 +8,7 @@
  */
 
 #include <stdio.h>
-#include "command.h"
-
-int get_command ()
+int getcommand ()
 {
 	char inp[128];
 	int i;
@@ -55,9 +53,9 @@ int get_command ()
 	return -1;
 }
 
-void print_help()
+void printhelp()
 {
-	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n edit \n invert \n exit");
+	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n edit \n invert \n exit\n");
 }
 
 

@@ -14,7 +14,8 @@ int main ()
 
 {
 
-  int a, exit, i, j, index, key;
+  int a, exit, i, j, index, key, st;
+  st = 1;
   char inp[128];
   char name[16];
   double matrix[10][10];
@@ -24,6 +25,9 @@ int main ()
 
   root = NULL;
   indexlist = NULL;
+
+  root = createnode(createrecord(0));
+  root->record->index=0;
 
   key = 1; /* inicjacja klucza */
   exit = 0;
@@ -38,9 +42,9 @@ int main ()
     case 0: /* wyświetlanie HELP'a */
       printhelp();
     break;
-    case 1: /* usuwanie macierzy */
+    case 1: /* ERASE usuwanie macierzy */
     break;
-    case 2: /* dodawanie macierzy */
+    case 2: /* ADD dodawanie macierzy */
       fgets(inp,128,stdin);
       a = buildmatrix(inp, matrix);/*pobierz*/
       if (a <= 0) /*sprawdzenie poprawności*/
@@ -57,22 +61,32 @@ int main ()
       }while(checkindex(indexlist, index));
       build->index = index;
       printf("Podaj nazwę dla tej macierzy. Do 16 znaków.");
+      flush(stdin);
+      for(i=0;i<16;i++){name[i]=' '}
       fgets(name,16,stdin);
+      build->size = a;
       for(i=0;i<16;i++){build->name[i] = name[i];}
       for(i=0;i<10;i++){for(j=0;j<10;j++)
       {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
       addnode (createnode(build), root);
+      addtolist(indexlist, createelement (index));
+      if (st)
+      {root=root->right; root->up=NULL; st=0;}
     break;
-    case 3: /**/
+    case 3: /* PRINT'owanie całego drzewa */
     printtree (root);
     break;
-    case 4: /**/
+    case 4: /* SHOW */
+      if(scanf("%d",&i))
+      {
+          
+      }
     break;
-    case 5: /**/
+    case 5: /* EDIT */
     break;
-    case 6: /**/
+    case 6: /* INVERT */
     break;
-    case 7: /**/
+    case 7: /* EXIT wyjście z programu */
       exit = 1;
     break;
     default:

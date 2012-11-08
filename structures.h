@@ -15,6 +15,7 @@ typedef struct database
   int index;
   char name[16];
   double matrix[10][10];
+  int size;
 } database;
 
 typedef struct bst_node

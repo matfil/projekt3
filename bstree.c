@@ -45,13 +45,7 @@ node* createnode (struct database* dane)
 }
 
 void addnode (node* element, node* root)
-{
-  if (root == NULL)
-  {
-    root = element;
-  }
-  else
-  {
+{ 
   if (element->record->index < root->record->index && root->left == NULL)
   {
     root->left = element; /* mniejszy i wolny lewy syn => element
@@ -80,7 +74,7 @@ void addnode (node* element, node* root)
       }
     }
   }
-  }
+  
 }
 
 node* treesearch (node* root, int index)
@@ -107,17 +101,19 @@ void printtree (node* root)
   {
     printf ("klucz: %d \n",root->record->key);
     printf ("index: %d \n",root->record->index);
+    printf ("nazwa: ");
     for (i=0;i<16;i++)
     {
-      printf ("nazwa: %c",root->record->name[i]);
+      printf ("%c",root->record->name[i]);
     }
     printf("\n");
-    for (i=0;i<10;i++)
+    for (i=0;i<root->record->size;i++)
     {
-      for (j=0;j<10;j++)
+      for (j=0;j<root->record->size;j++)
       {
         printf ("%f ",root->record->matrix[i][j]);
       }
+      printf ("\n");
     }
     printf("\n");
     printtree (root->left);
