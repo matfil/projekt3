@@ -102,11 +102,25 @@ node* treesearch (node* root, int index)
 
 void printtree (node* root)
 {
+  int i, j;
   if (root != NULL)
   {
-    printf ("%d ",root->record->key);
-    print_tree (root->left);
-    print_tree (root->right);
+    printf ("klucz: %d \n",root->record->key);
+    printf ("index: %d \n",root->record->index);
+    for (i=0;i<16;i++)
+    {
+      printf ("nazwa: %c",root->record->name[i]);
+    }
+    printf("\n");
+    for (i=0;i<10;i++)
+    {
+      for (j=0;j<10;j++)
+      {
+        printf ("%f ",root->record->matrix[i][j]);
+      }
+    }
+    printf("\n");
+    printtree (root->left);
+    printtree (root->right);
   }
 }
-

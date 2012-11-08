@@ -8,18 +8,22 @@
 #include "command.h"
 #include "invert.h"
 #include "list.h"
+#include "input.h"
 
 int main ()
 
 {
 
-  int a, exit, i, index, key;
+  int a, exit, i, j, index, key;
   char inp[128];
   char name[16];
   double matrix[10][10];
   database* build;
   node* root;  
   list* indexlist; /* lista indexów */
+
+  root = NULL;
+  indexlist = NULL;
 
   key = 1; /* inicjacja klucza */
   exit = 0;
@@ -55,9 +59,12 @@ int main ()
       printf("Podaj nazwę dla tej macierzy. Do 16 znaków.");
       fgets(name,16,stdin);
       for(i=0;i<16;i++){build->name[i] = name[i];}
+      for(i=0;i<10;i++){for(j=0;j<10;j++)
+      {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
       addnode (createnode(build), root);
     break;
     case 3: /**/
+    printtree (root);
     break;
     case 4: /**/
     break;
