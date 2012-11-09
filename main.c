@@ -16,6 +16,7 @@ int main ()
 
   int a, exit, i, j, index, key, st;
   st = 1;
+  char znak;
   char inp[128];
   char name[16];
   double matrix[10][10];
@@ -49,7 +50,7 @@ int main ()
       a = buildmatrix(inp, matrix);/*pobierz*/
       if (a <= 0) /*sprawdzenie poprawności*/
       {
-        printf("Macierz niepoprawna. Spróbuj jeszcze raz.");
+        printf("Macierz niepoprawna. Spróbuj jeszcze raz.\n");
         break;
       }
       build = NULL;
@@ -60,9 +61,9 @@ int main ()
         index = rand() % 10000;
       }while(checkindex(indexlist, index));
       build->index = index;
-      printf("Podaj nazwę dla tej macierzy. Do 16 znaków.");
-      flush(stdin);
-      for(i=0;i<16;i++){name[i]=' '}
+      printf("Podaj nazwę dla tej macierzy. Do 16 znaków: ");
+      /*flush(stdin);*/
+      for(i=0;i<16;i++){name[i]=' ';}
       fgets(name,16,stdin);
       build->size = a;
       for(i=0;i<16;i++){build->name[i] = name[i];}
@@ -74,7 +75,13 @@ int main ()
       {root=root->right; root->up=NULL; st=0;}
     break;
     case 3: /* PRINT'owanie całego drzewa */
-    printtree (root);
+      printf("Wylistować bazę sortując rosnąco czy malejąco?\n");
+      printf("Zostanie wczytany 1 znak. Dozwolone odpowiednio: r m \n");
+      scanf("%c",&znak);
+      if (znak == 'm')
+      { dprint (root); }
+      else
+      { uprint (root); }
     break;
     case 4: /* SHOW */
       if(scanf("%d",&i))

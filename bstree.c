@@ -120,3 +120,100 @@ void printtree (node* root)
     printtree (root->right);
   }
 }
+
+node* maxvalue (node* root)
+{
+  if (root->right != NULL)
+  { return maxvalue (root->right); }
+  else
+  { return root; }
+}
+
+node* minvalue (node* root)
+{
+  if (root->left != NULL)
+  { return minvalue (root->left); }
+  else
+  { return root; }
+}
+
+node* bstpred (node* what)
+{
+  node* pred;
+  pred = what->up;
+  if (what == NULL)
+  { return NULL; }
+  if (what->left != NULL)
+  { return maxvalue(what->left); }
+  while(pred != NULL && pred->left == what )
+  {
+    what = pred;
+    pred = pred->up;
+  }
+  return pred;
+}
+
+node* bstsucc (node* what)
+{
+  node* succ;
+  succ = what->up;
+  if (what == NULL)
+  { return NULL; }
+  if (what->right != NULL)
+  { return minvalue(what->right); }
+  while(succ != NULL && succ->right == what)
+  {
+    what = succ;
+    succ = succ->up;
+  }
+  return succ;
+}
+
+void printsingle (node* what)
+{
+  int i, j;
+  if (what != NULL)
+  {
+    printf ("klucz: %d \n",what->record->key);
+    printf ("index: %d \n",what->record->index);
+    printf ("nazwa: ");
+    for (i=0;i<16;i++)
+    {
+      printf ("%c",what->record->name[i]);
+    }
+    printf("\n");
+    for (i=0;i<what->record->size;i++)
+    {
+      for (j=0;j<what->record->size;j++)
+      {
+        printf ("%f ",what->record->matrix[i][j]);
+      }
+      printf ("\n");
+    }
+    printf("\n");
+  }
+}
+
+void dprint (node* root) /* nie nadaje się do printowania poddrzew 
+                            zawsze wyprintuje całe, bo root 
+                            będzie miał rodzica */
+{
+  node* sth;
+  sth = maxvalue (root);
+  while ( sth != NULL )
+  {
+    printsingle (sth);
+    sth = bstpred (sth);
+  }
+}
+
+void uprint (node* root)
+{
+  node* sth;
+  sth = minvalue (root);
+  while ( sth != NULL )
+  {
+    printsingle (sth);
+    sth = bstsucc (sth);
+  }
+}

@@ -13,6 +13,10 @@ node* createnode (struct database* dane);
 void addnode (node* element, node* root);
 node* treesearch (node* root, int index);
 void printtree (node* root);
-
-
+node* maxvalue (node* root);
+node* minvalue (node* root);
+node* bstpred (node* what);
+node* bstsucc (node* what);
+void dprint (node* root);
+void uprint (node* root);
 #endif /* BSTREE_H_ */
