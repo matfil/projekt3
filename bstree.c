@@ -217,3 +217,63 @@ void uprint (node* root)
     sth = bstsucc (sth);
   }
 }
+
+void transplant (node* u, node* v)
+{
+  if (u->up == NULL)
+  {
+    u = v;
+    if (v != NULL)
+    {
+      v->up = NULL;
+    }
+  }
+  else
+  {
+    if (u = u->up->left)
+    {
+      u->up->left = v;
+    }
+    else
+    {
+      u->up->right = v;
+    }
+  }
+  if (v != NULL)
+  {
+    v->up = u->up;
+  }
+}
+
+void nodedelete (node* target)
+{
+  node* y;
+  if (target->left == NULL)
+  {
+    transplant(target,target->right);
+  }
+  else
+  {
+    if (target->right == NULL)
+    {
+      transplant(target,target->left);
+    }
+    else
+    {
+      y = minvalue(target->right);
+      if (y->up != target)
+      {
+        transplant(y,y->right);
+        y->right = target->right;
+        y->right->up = y;
+      }
+      transplant(target,y);
+      y->left = target->left;
+      y->left->up = y;
+    }
+  }
+  
+  free(target);
+}
+
+

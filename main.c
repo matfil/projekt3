@@ -44,6 +44,11 @@ int main ()
       printhelp();
     break;
     case 1: /* ERASE usuwanie macierzy */
+      scanf ("%d",&a);
+      nodedelete(treesearch(root,a));
+      printf("usunięto wpis o indeksie: %d \n", a);
+
+      fflush(stdin);
     break;
     case 2: /* ADD dodawanie macierzy */
       fgets(inp,128,stdin);
@@ -77,7 +82,10 @@ int main ()
     case 3: /* PRINT'owanie całego drzewa */
       printf("Wylistować bazę sortując rosnąco czy malejąco?\n");
       printf("Zostanie wczytany 1 znak. Dozwolone odpowiednio: r m \n");
-      scanf("%c",&znak);
+      fgets(inp,128,stdin);
+      znak = inp[0];
+      if (exitfound(inp))
+      { return 0; }
       if (znak == 'm')
       { dprint (root); }
       else
@@ -97,7 +105,7 @@ int main ()
       exit = 1;
     break;
     default:
-      printf("Nie podano zrozumiałej komendy. Spróbuj help.");
+      printf("Nie podano zrozumiałej komendy. Spróbuj help.\n");
     break;
     } /* switch ( getcommand() ) */
   } /* while (exit != 1) */
