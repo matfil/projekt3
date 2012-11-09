@@ -46,9 +46,14 @@ int main ()
     case 1: /* ERASE usuwanie macierzy */
       scanf ("%d",&a);
       nodedelete(treesearch(root,a));
+      removefromlist(indexlist,a);
       printf("usunięto wpis o indeksie: %d \n", a);
-
-      fflush(stdin);
+      if (root == NULL)
+      {
+        root = createnode(createrecord(0));
+        root->record->index=0;
+        st = 1;
+      }
     break;
     case 2: /* ADD dodawanie macierzy */
       fgets(inp,128,stdin);
@@ -67,7 +72,6 @@ int main ()
       }while(checkindex(indexlist, index));
       build->index = index;
       printf("Podaj nazwę dla tej macierzy. Do 16 znaków: ");
-      /*flush(stdin);*/
       for(i=0;i<16;i++){name[i]=' ';}
       fgets(name,16,stdin);
       build->size = a;
@@ -76,7 +80,8 @@ int main ()
       {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
       addnode (createnode(build), root);
       addtolist(indexlist, createelement (index));
-      if (st)
+      if (st)/*bo dodawanie do drzewa działa dobrze 
+               z conajmniej 1 elementem*/
       {root=root->right; root->up=NULL; st=0;}
     break;
     case 3: /* PRINT'owanie całego drzewa */
