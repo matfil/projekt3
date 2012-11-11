@@ -19,4 +19,6 @@ node* bstpred (node* what);
 node* bstsucc (node* what);
 void dprint (node* root);
 void uprint (node* root);
+void transplant (node* u, node* v);
+void nodedelete (node* target);
 #endif /* BSTREE_H_ */

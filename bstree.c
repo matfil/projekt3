@@ -79,6 +79,8 @@ void addnode (node* element, node* root)
 
 node* treesearch (node* root, int index)
 {
+  if (root != NULL)
+  {
   if (root->record->index == index || root == NULL)
   {
     return root;
@@ -91,6 +93,7 @@ node* treesearch (node* root, int index)
   {
     treesearch (root->left, index);
   }
+  } /* if (root != NULL) */
   return NULL;
 }
 
@@ -230,7 +233,7 @@ void transplant (node* u, node* v)
   }
   else
   {
-    if (u = u->up->left)
+    if (u == u->up->left)
     {
       u->up->left = v;
     }
@@ -247,6 +250,8 @@ void transplant (node* u, node* v)
 
 void nodedelete (node* target)
 {
+  if (target != NULL)
+  {
   node* y;
   if (target->left == NULL)
   {
@@ -274,6 +279,7 @@ void nodedelete (node* target)
   }
   
   free(target);
+  }
 }
 
 

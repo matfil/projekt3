@@ -14,13 +14,14 @@ int main ()
 
 {
 
-  int a, exit, i, j, index, key, st;
+  int a, a1, exit, i, j, k, index, key, s, st;
   st = 1;
   char znak;
   char inp[128];
   char name[16];
   double matrix[10][10];
   database* build;
+  node* hold;  
   node* root;  
   list* indexlist; /* lista indexów */
 
@@ -103,6 +104,57 @@ int main ()
       }
     break;
     case 5: /* EDIT */
+      printf("Który wpis chcesz edytować?\n");
+      scanf("%d",&a);
+      a1 = a;
+      hold = treesearch (root,a);
+      if (hold != NULL)
+      {
+        printsingle (hold);
+        printf ("Czy chcesz zmienić nazwę macierzy? (t/n)");
+        fgets (inp,128,stdin);
+        znak = inp[0];
+        if (znak == 't')
+        {
+          printf ("Podaj nową nazwę.\n");
+          fgets(name,16,stdin);
+          for(i=0;i<16;i++){hold->record->name[i] = name[i];}
+        }
+        printf ("Czy chcesz zmienić index macierzy? (t/n)");
+        fgets (inp,128,stdin);
+        znak = inp[0];
+        if (znak == 't')
+        {
+          removefromlist(indexlist, a);/* usuń zmieniany index z listy */
+          do
+          {
+            printf ("Podaj nowy index. ");
+            scanf("%d",&a); /* zapytaj o nowy */
+          }while (checkindex(indexlist, a));/* sprawdź czy już jest */
+          addtolist(indexlist, createelement(a)); /* dodaj do listy */
+          if (a != hold->record->index)
+          {
+            k = hold->record->key;
+            s = hold->record->size;
+            for(i=0;i<16;i++){name[i] = hold->record->name[i];}
+            for(i=0;i<10;i++){for(j=0;j<10;j++)
+            {matrix[i][j]=hold->record->matrix[i][j];}}/* Przepisanie macierzy. */
+            nodedelete(treesearch (root, a1));/* niszczę stary który mógłby 
+                                    psuć strukturę drzewa */
+            build = createrecord(k);/* klucz */
+            build->index = a; /* index */
+            build->size = s; /* size */
+            for(i=0;i<16;i++){build->name[i] = name[i];} /* name */
+	          for(i=0;i<10;i++){for(j=0;j<10;j++)
+            {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
+            addnode(createnode(build),root);
+            
+          }
+          /* ELSE nic nie rób */
+        }
+      }
+      else
+      { printf("Nie ma takiego numeru. \n"); }
     break;
     case 6: /* INVERT */
     break;
