@@ -76,7 +76,7 @@ void removefromlist(list* first, int index)
   }
   else
   {
-    printf("W liście nie ma index'u %d", index);
+   
   }
 
 }

@@ -87,11 +87,11 @@ node* treesearch (node* root, int index)
   }
   if (index > root->record->index)
   {
-    treesearch (root->right, index);
+    return treesearch (root->right, index);
   }
   if (index < root->record->index)
   {
-    treesearch (root->left, index);
+    return treesearch (root->left, index);
   }
   } /* if (root != NULL) */
   return NULL;

@@ -21,4 +21,5 @@ void dprint (node* root);
 void uprint (node* root);
 void transplant (node* u, node* v);
 void nodedelete (node* target);
+void printsingle (node* what);
 #endif /* BSTREE_H_ */

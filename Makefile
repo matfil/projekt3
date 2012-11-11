@@ -6,8 +6,8 @@ CFLAGS= -c -W -Wall
 
 all: prog
 
-prog: main.o bstree.o command.o input.o invert.o list.o potega.o wyznacznik.o
-	$(CC) -o prog main.o bstree.o command.o input.o invert.o list.o potega.o wyznacznik.o
+prog: main.o bstree.o command.o input.o invert.o list.o potega.o reader.o wyznacznik.o
+	$(CC) -o prog main.o bstree.o command.o input.o invert.o list.o potega.o reader.o wyznacznik.o
 
 bstree.o: bstree.c bstree.h
 	$(CC) $(CFLAGS) -o bstree.o bstree.c
@@ -26,6 +26,9 @@ list.o: list.c list.h
 
 potega.o: potega.c potega.h
 	$(CC) $(CFLAGS) -o potega.o potega.c
+
+reader.o: reader.c reader.h
+	$(CC) $(CFLAGS) -o reader.o reader.c
 
 wyznacznik.o: wyznacznik.c wyznacznik.h
 	$(CC) $(CFLAGS) -o  wyznacznik.o wyznacznik.c

@@ -9,6 +9,7 @@
 #include "invert.h"
 #include "list.h"
 #include "input.h"
+#include "reader.h" 
 
 int main ()
 
@@ -45,7 +46,9 @@ int main ()
       printhelp();
     break;
     case 1: /* ERASE usuwanie macierzy */
-      scanf ("%d",&a);
+      fgets(inp,128,stdin);
+      prepare(inp,128);
+      a = atoi(inp);
       nodedelete(treesearch(root,a));
       removefromlist(indexlist,a);
       printf("usunięto wpis o indeksie: %d \n", a);
@@ -83,7 +86,13 @@ int main ()
       addtolist(indexlist, createelement (index));
       if (st)/*bo dodawanie do drzewa działa dobrze 
                z conajmniej 1 elementem*/
-      {root=root->right; root->up=NULL; st=0;}
+      { 
+        hold = root;
+        root=root->right; 
+        root->up=NULL; 
+        st=0;
+        free (hold);
+      }
     break;
     case 3: /* PRINT'owanie całego drzewa */
       printf("Wylistować bazę sortując rosnąco czy malejąco?\n");
@@ -105,13 +114,17 @@ int main ()
     break;
     case 5: /* EDIT */
       printf("Który wpis chcesz edytować?\n");
-      scanf("%d",&a);
+      fgets(inp,128,stdin);
+      prepare(inp,128);
+      a = atoi(inp);
       a1 = a;
       hold = treesearch (root,a);
       if (hold != NULL)
       {
+
         printsingle (hold);
-        printf ("Czy chcesz zmienić nazwę macierzy? (t/n)");
+
+        printf ("Czy chcesz zmienić nazwę macierzy? (t/n) ");
         fgets (inp,128,stdin);
         znak = inp[0];
         if (znak == 't')
@@ -119,8 +132,8 @@ int main ()
           printf ("Podaj nową nazwę.\n");
           fgets(name,16,stdin);
           for(i=0;i<16;i++){hold->record->name[i] = name[i];}
-        }
-        printf ("Czy chcesz zmienić index macierzy? (t/n)");
+        } /* if (znak == 't') */
+        printf ("Czy chcesz zmienić index macierzy? (t/n) ");
         fgets (inp,128,stdin);
         znak = inp[0];
         if (znak == 't')
@@ -129,7 +142,9 @@ int main ()
           do
           {
             printf ("Podaj nowy index. ");
-            scanf("%d",&a); /* zapytaj o nowy */
+            fgets(inp,128,stdin);
+            prepare(inp,128);
+            a = atoi(inp);/* zapytaj o nowy */
           }while (checkindex(indexlist, a));/* sprawdź czy już jest */
           addtolist(indexlist, createelement(a)); /* dodaj do listy */
           if (a != hold->record->index)
@@ -141,6 +156,12 @@ int main ()
             {matrix[i][j]=hold->record->matrix[i][j];}}/* Przepisanie macierzy. */
             nodedelete(treesearch (root, a1));/* niszczę stary który mógłby 
                                     psuć strukturę drzewa */
+            if (root == NULL)
+            {
+              root = createnode(createrecord(0));
+              root->record->index=0;
+              st=1;
+            }
             build = createrecord(k);/* klucz */
             build->index = a; /* index */
             build->size = s; /* size */
@@ -148,11 +169,18 @@ int main ()
 	          for(i=0;i<10;i++){for(j=0;j<10;j++)
             {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
             addnode(createnode(build),root);
-            
+            if(st)
+            {
+              hold = root; 
+              root=root->right;
+              root->up = NULL; 
+              st=0; 
+              free(hold);
+            }
           }
           /* ELSE nic nie rób */
-        }
-      }
+        }/* if (znak == 't') */
+      }/* if (hold != NULL) */
       else
       { printf("Nie ma takiego numeru. \n"); }
     break;
