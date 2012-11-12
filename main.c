@@ -15,8 +15,7 @@
 int main ()
 
 {
-  printf("Program obsługujący bazę danych macierzy odwracalnych. 
-        \nAutor: Mateusz Filipiuk");
+  printf("Program obsługujący bazę danych macierzy odwracalnych. \nAutor: Mateusz Filipiuk");
   int a, a1, exit, i, j, k, index, key, s, st;
   st = 1;
   char znak;
