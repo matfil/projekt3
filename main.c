@@ -48,6 +48,8 @@ int main ()
     break;
     case 1: /* ERASE usuwanie macierzy */
       fgets(inp,128,stdin);
+      if (exitfound(inp))
+      { return 0; }
       prepare(inp,128);
       a = atoi(inp);
       nodedelete(treesearch(root,a));
@@ -63,6 +65,8 @@ int main ()
     case 2: /* ADD dodawanie macierzy */
       printf("Format wejścia: [a, b, c;d, e, f;g, h, i, j]\n");
       fgets(inp,128,stdin);
+      if (exitfound(inp))
+      { return 0; }
       a = buildmatrix(inp, matrix);/*pobierz*/
       if (a <= 0) /*sprawdzenie poprawności*/
       {
@@ -118,6 +122,8 @@ int main ()
     case 4: /* SHOW */
       printf("Podaj indeks macierzy, którą chcesz wyświetlić. ");
       fgets(inp,128,stdin);
+      if (exitfound(inp))
+      { return 0; }
       prepare(inp,128);
       a = atoi(inp);
       printsingle(treesearch(root,a));
@@ -125,6 +131,8 @@ int main ()
     case 5: /* EDIT */
       printf("Który wpis chcesz edytować?\n");
       fgets(inp,128,stdin);
+      if (exitfound(inp))
+      { return 0; }
       prepare(inp,128);
       a = atoi(inp);
       a1 = a;
@@ -136,6 +144,8 @@ int main ()
 
         printf ("Czy chcesz zmienić nazwę macierzy? (t/n) ");
         fgets (inp,128,stdin);
+        if (exitfound(inp))
+        { return 0; }
         znak = inp[0];
         if (znak == 't')
         {
@@ -145,6 +155,7 @@ int main ()
         } /* if (znak == 't') */
         printf ("Czy chcesz zmienić index macierzy? (t/n) ");
         fgets (inp,128,stdin);
+        if (exitfound(inp))
         znak = inp[0];
         if (znak == 't')
         {
@@ -153,6 +164,8 @@ int main ()
           {
             printf ("Podaj nowy index. ");
             fgets(inp,128,stdin);
+            if (exitfound(inp))
+            { return 0; }
             prepare(inp,128);
             a = atoi(inp);/* zapytaj o nowy */
           }while (checkindex(indexlist, a));/* sprawdź czy już jest */
@@ -197,8 +210,10 @@ int main ()
     case 6: /* INVERT */
       printf("Podaj indeks macierzy do odwrócenia ");
       fgets(inp,128,stdin);
+      if (exitfound(inp))
+      { return 0; }
       prepare(inp,128);
-      a = atoi(inp);
+      a = atoi(inp);/* parsowanie */
       hold = treesearch(root,a);
       if (hold != NULL)
       {
