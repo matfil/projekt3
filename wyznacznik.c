@@ -21,7 +21,7 @@ void showarray(double tab[10][10],int n)
     {
       printf("%f ",tab[i][j]);
     }
-    printf("\n\n");
+    printf("\n");
   }
 }
 

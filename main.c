@@ -10,6 +10,7 @@
 #include "list.h"
 #include "input.h"
 #include "reader.h" 
+#include "wyznacznik.h"
 
 int main ()
 
@@ -93,6 +94,7 @@ int main ()
         st=0;
         free (hold);
       }
+      printf("wpisowi nadano klucz %d i index %d.\n", key-1, index); 
     break;
     case 3: /* PRINT'owanie całego drzewa */
       printf("Wylistować bazę sortując rosnąco czy malejąco?\n");
@@ -104,14 +106,21 @@ int main ()
       if (znak == 'm')
       { dprint (root); }
       else
-      { uprint (root); }
-    break;
-    case 4: /* SHOW */
-      if(scanf("%d",&i))
-      {
-          
+      { 
+        if (znak != 'r')
+        {
+          printf("\"nie wiem\" znaczy wylistować rosnąco\n");
+        }
+        uprint (root); 
       }
     break;
+    case 4: /* SHOW */
+      printf("Podaj indeks macierzy, którą chcesz wyświetlić. ");
+      fgets(inp,128,stdin);
+      prepare(inp,128);
+      a = atoi(inp);
+      printsingle(treesearch(root,a));
+      break;
     case 5: /* EDIT */
       printf("Który wpis chcesz edytować?\n");
       fgets(inp,128,stdin);
@@ -185,6 +194,17 @@ int main ()
       { printf("Nie ma takiego numeru. \n"); }
     break;
     case 6: /* INVERT */
+      printf("Podaj indeks macierzy do odwrócenia ");
+      fgets(inp,128,stdin);
+      prepare(inp,128);
+      a = atoi(inp);
+      hold = treesearch(root,a);
+      if (hold != NULL)
+      {
+      inverter(hold->record->matrix,matrix,hold->record->size);
+      printf("To jest macierz odwrotna\n");
+      showarray(matrix,hold->record->size);
+      }
     break;
     case 7: /* EXIT wyjście z programu */
       exit = 1;
