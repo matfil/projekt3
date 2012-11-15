@@ -15,7 +15,7 @@
 int main ()
 
 {
-  printf("Program obsługujący bazę danych macierzy odwracalnych. \nAutor: Mateusz Filipiuk");
+  printf("Program obsługujący bazę danych macierzy odwracalnych. \nAutor: Mateusz Filipiuk\n");
   int a, a1, exit, i, j, k, index, key, s, st;
   st = 1;
   char znak;
@@ -24,7 +24,7 @@ int main ()
   double matrix[10][10];
   database* build;
   node* hold;  
-  node* root;  
+  node* root;
   list* indexlist; /* lista indexów */
 
   root = NULL;
@@ -32,6 +32,8 @@ int main ()
 
   root = createnode(createrecord(0));
   root->record->index=0;
+  
+  indexlist = createelement(0);
 
   key = 1; /* inicjacja klucza */
   exit = 0;
@@ -40,6 +42,7 @@ int main ()
 
   while (exit != 1)
   {
+    fflush(stdin);
     printf("Podaj komendę. \n");
     switch ( getcommand() )  /* pobranie komendy */
     {
@@ -47,11 +50,13 @@ int main ()
       printhelp();
     break;
     case 1: /* ERASE usuwanie macierzy */
+      fflush(stdin);
       fgets(inp,128,stdin);
       if (exitfound(inp))
       { return 0; }
       prepare(inp,128);
       a = atoi(inp);
+      clear(inp);
       nodedelete(treesearch(root,a));
       removefromlist(indexlist,a);
       printf("usunięto wpis o indeksie: %d \n", a);
@@ -63,11 +68,17 @@ int main ()
       }
     break;
     case 2: /* ADD dodawanie macierzy */
-      printf("Format wejścia: [a, b, c;d, e, f;g, h, i, j]\n");
+      fflush(stdin);
+      printf("Format wejścia: [a b c;d e f;g h i]\n");
+      clear(inp);
       fgets(inp,128,stdin);
+      printf("here");
       if (exitfound(inp))
       { return 0; }
+      printf("here");
       a = buildmatrix(inp, matrix);/*pobierz*/
+      printf("here");
+      clear(inp);
       if (a <= 0) /*sprawdzenie poprawności*/
       {
         printf("Macierz niepoprawna. Spróbuj jeszcze raz.\n");
@@ -79,6 +90,7 @@ int main ()
       do
       { 
         index = rand() % 10000;
+        printf("%d %d",index,checkindex(indexlist,index));
       }while(checkindex(indexlist, index));
       build->index = index;
       printf("Podaj nazwę dla tej macierzy. Do 16 znaków: ");
@@ -108,6 +120,7 @@ int main ()
       znak = inp[0];
       if (exitfound(inp))
       { return 0; }
+      clear(inp);
       if (znak == 'm')
       { dprint (root); }
       else
@@ -126,6 +139,7 @@ int main ()
       { return 0; }
       prepare(inp,128);
       a = atoi(inp);
+      clear(inp);
       printsingle(treesearch(root,a));
       break;
     case 5: /* EDIT */
@@ -135,6 +149,7 @@ int main ()
       { return 0; }
       prepare(inp,128);
       a = atoi(inp);
+      clear(inp);
       a1 = a;
       hold = treesearch (root,a);
       if (hold != NULL)
@@ -147,6 +162,7 @@ int main ()
         if (exitfound(inp))
         { return 0; }
         znak = inp[0];
+        clear(inp);
         if (znak == 't')
         {
           printf ("Podaj nową nazwę.\n");
@@ -156,18 +172,23 @@ int main ()
         printf ("Czy chcesz zmienić index macierzy? (t/n) ");
         fgets (inp,128,stdin);
         if (exitfound(inp))
+        { return 0; }
         znak = inp[0];
+        clear(inp);
         if (znak == 't')
         {
           removefromlist(indexlist, a);/* usuń zmieniany index z listy */
           do
           {
+            fflush(stdin);
             printf ("Podaj nowy index. ");
             fgets(inp,128,stdin);
             if (exitfound(inp))
             { return 0; }
             prepare(inp,128);
             a = atoi(inp);/* zapytaj o nowy */
+            clear(inp);
+            i = checkindex (indexlist,a);
           }while (checkindex(indexlist, a));/* sprawdź czy już jest */
           addtolist(indexlist, createelement(a)); /* dodaj do listy */
           if (a != hold->record->index)
@@ -208,12 +229,14 @@ int main ()
       { printf("Nie ma takiego numeru. \n"); }
     break;
     case 6: /* INVERT */
+      fflush(stdin);
       printf("Podaj indeks macierzy do odwrócenia ");
       fgets(inp,128,stdin);
       if (exitfound(inp))
       { return 0; }
       prepare(inp,128);
       a = atoi(inp);/* parsowanie */
+      clear(inp);
       hold = treesearch(root,a);
       if (hold != NULL)
       {

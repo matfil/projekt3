@@ -2,7 +2,7 @@
 CC=gcc
 
 #Flagi kompilatora
-CFLAGS= -c -W -Wall
+CFLAGS= -c -W -Wall -std=c99
 
 all: prog
 

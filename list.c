@@ -1,9 +1,9 @@
 /*
- * list.c
- *
- *  Created on: 05-11-2012
- *      Author: matfil
- */
+* list.c
+*
+* Created on: 05-11-2012
+* Author: matfil
+*/
 
 #include <stdio.h>
 #include "structures.h"
@@ -17,42 +17,51 @@ list* createelement (int a)
   return newone; /* zwróć wskaźnik */
 }
 
+
+void showlist (list* first)
+{
+  list* hold;
+  hold = first;
+  while(hold != NULL)
+  {
+    printf(" %d ",hold->index);
+    hold = hold->forward;
+  }
+  printf("\n");
+}
+
 int checkindex (list* first, int a) /* sprawdza czy w liście jest
                                        element z indexem a*/
 {
-  if (first != NULL)
+  list* hold;
+  hold = first;
+  while (hold != NULL)
   {
-    if (first->index == a)
-    {
-      return 1; /* znalazłem index == a */
-    }
+    if (hold->index == a)
+      return 1;
     else
-    {
-      return checkindex (first->forward, a);
-    }
+      hold = hold->forward;/* sprawdźmy następny element listy */
   }
-  else
-  {
-    return 0; /* nie znalazłem indexu == a w liście */
-  }
+  return 0;
 }
+               
 
 void addtolist (list* first, list* what)
 {
-  if (first == NULL)
+  if (first != NULL)
+  {
+
+  list* hold;
+  hold = first;
+  while(hold->forward != NULL)
+  {
+    hold = hold->forward;
+  }
+  hold->forward = what;
+  }/* if (first != NULL) */
+  else
   {
     first = what;
-  }
-  else
-  {
-  if (first->forward == NULL)
-  {
-    first->forward = what;
-  }
-  else
-  {
-    addtolist (first->forward, what);
-  }
   }
 }
 
@@ -80,4 +89,3 @@ void removefromlist(list* first, int index)
   }
 
 }
-

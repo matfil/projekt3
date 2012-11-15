@@ -55,7 +55,7 @@ int getcommand ()
 
 void printhelp()
 {
-	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n edit \n invert \n exit\n");
+	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n print \n edit \n invert \n exit\n");
 }
 
 
