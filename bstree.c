@@ -140,7 +140,7 @@ void printtree (node* root)
     {
       for (j=0;j<root->record->size;j++)
       {
-        printf ("%f ",root->record->matrix[i][j]);
+        printf ("%.0f ",root->record->matrix[i][j]);
       }
       printf ("\n");
     }
