@@ -31,7 +31,7 @@ reader.o: reader.c reader.h
 	$(CC) $(CFLAGS) -o reader.o reader.c
 
 wyznacznik.o: wyznacznik.c wyznacznik.h
-	$(CC) $(CFLAGS) -o  wyznacznik.o wyznacznik.c
+	$(CC) $(CFLAGS) -o wyznacznik.o wyznacznik.c
 
 main.o: main.c
 	$(CC) $(CFLAGS) -o main.o main.c
