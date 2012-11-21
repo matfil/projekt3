@@ -59,7 +59,7 @@ void basedump (FILE* file, node* root)
     {
       for(j=0;j<root->record->size;j++)
       {
-        fprintf(file,"%.0f ",root->record->matrix[i][j]);
+        fprintf(file,"%g ",root->record->matrix[i][j]);
       }
       if (i+1 < root->record->size)
         fprintf(file,";");
@@ -140,7 +140,7 @@ void printtree (node* root)
     {
       for (j=0;j<root->record->size;j++)
       {
-        printf ("%.0f ",root->record->matrix[i][j]);
+        printf ("%g ",root->record->matrix[i][j]);
       }
       printf ("\n");
     }
@@ -215,7 +215,7 @@ void printsingle (node* what)
     {
       for (j=0;j<what->record->size;j++)
       {
-        printf ("%f ",what->record->matrix[i][j]);
+        printf ("%g ",what->record->matrix[i][j]);
       }
       printf ("\n");
     }
