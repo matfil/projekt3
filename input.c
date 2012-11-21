@@ -32,7 +32,7 @@ void smacznego (char inp[128])
   int i;
   for (i = 0;i < 128;i++)
   {
-    if (inp[i]==';')/*zjadam ;*/
+    if (inp[i]==';')/* zjadam ; */
     {
       inp[i] = ' ';
       break;
@@ -46,7 +46,7 @@ void printinput (char inp[128])
   int i;
   for (i = 0;i < 128;i++)
   {
-    printf ("%c", inp[i] );/*wypisuję inp ut*/
+    printf ("%c", inp[i] );/* wypisuję input */
   }
 
   printf ("\n");
@@ -57,10 +57,10 @@ int lettercheck (char inp[128])
 {
   int i;
 
-  for (i = 0; i < 128; i++) /*sprawdzam poprawność ciągu znaków*/
+  for (i = 0; i < 128; i++) /* sprawdzam poprawność ciągu znaków */
   {
     if ((inp[i] == ' '|| inp[i] == '-' || inp[i] == '.' || inp[i] == ';') || (inp[i] >= 48 && inp[i] < 58) )
-    {} /*znaki dozwolone*/
+    {} /* znaki dozwolone */
     else
     {
 

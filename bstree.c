@@ -44,6 +44,32 @@ node* createnode (struct database* dane)
   return newone;
 }
 
+void basedump (FILE* file, node* root)
+{
+  if ( root != NULL )
+  {
+    int i, j; /* iterators */
+
+    basedump (file, root->right);
+    basedump (file, root->left);
+    fprintf (file, "%d %d x\n", root->record->key, root->record->index);
+    fputs (root->record->name, file);
+    fprintf (file, "[");
+    for(i=0;i<root->record->size;i++)
+    {
+      for(j=0;j<root->record->size;j++)
+      {
+        fprintf(file,"%.0f ",root->record->matrix[i][j]);
+      }
+      if (i+1 < root->record->size)
+        fprintf(file,";");
+    }
+    fprintf (file, "%c] x\n",8);
+    fprintf (file, "%d x\n", root->record->size);
+
+  }
+}
+
 void addnode (node* element, node* root)
 { 
   if (element->record->index < root->record->index && root->left == NULL)

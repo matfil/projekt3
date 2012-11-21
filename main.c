@@ -15,7 +15,11 @@
 int main ()
 
 {
+
+
   printf("Program obsługujący bazę danych macierzy odwracalnych. \nAutor: Mateusz Filipiuk\n");
+  
+  
   int a, a1, exit, i, j, k, index, key, s, st;
   st = 1;
   char znak;
@@ -27,6 +31,8 @@ int main ()
   node* root;
   list* indexlist; /* lista indexów */
 
+  FILE* file;
+  
   root = NULL;
   indexlist = NULL;
 
@@ -49,6 +55,7 @@ int main ()
     case 0: /* wyświetlanie HELP'a */
       printhelp();
     break;
+    /* -------------------------------------------------------------------------------1 */
     case 1: /* ERASE usuwanie macierzy */
       fflush(stdin);
       fgets(inp,128,stdin);
@@ -67,17 +74,15 @@ int main ()
         st = 1;
       }
     break;
+    /* -------------------------------------------------------------------------------2 */
     case 2: /* ADD dodawanie macierzy */
       fflush(stdin);
       printf("Format wejścia: [a b c;d e f;g h i]\n");
       clear(inp);
       fgets(inp,128,stdin);
-      printf("here");
       if (exitfound(inp))
       { return 0; }
-      printf("here");
       a = buildmatrix(inp, matrix);/*pobierz*/
-      printf("here");
       clear(inp);
       if (a <= 0) /*sprawdzenie poprawności*/
       {
@@ -90,7 +95,6 @@ int main ()
       do
       { 
         index = rand() % 10000;
-        printf("%d %d",index,checkindex(indexlist,index));
       }while(checkindex(indexlist, index));
       build->index = index;
       printf("Podaj nazwę dla tej macierzy. Do 16 znaków: ");
@@ -113,6 +117,7 @@ int main ()
       }
       printf("wpisowi nadano klucz %d i index %d.\n", key-1, index); 
     break;
+    /* -------------------------------------------------------------------------------3 */
     case 3: /* PRINT'owanie całego drzewa */
       printf("Wylistować bazę sortując rosnąco czy malejąco?\n");
       printf("Zostanie wczytany 1 znak. Dozwolone odpowiednio: r m \n");
@@ -132,6 +137,7 @@ int main ()
         uprint (root); 
       }
     break;
+    /* -------------------------------------------------------------------------------4 */
     case 4: /* SHOW */
       printf("Podaj indeks macierzy, którą chcesz wyświetlić. ");
       fgets(inp,128,stdin);
@@ -141,37 +147,39 @@ int main ()
       a = atoi(inp);
       clear(inp);
       printsingle(treesearch(root,a));
-      break;
+    break;
+    /* -------------------------------------------------------------------------------5 */
     case 5: /* EDIT */
       printf("Który wpis chcesz edytować?\n");
       fgets(inp,128,stdin);
-      if (exitfound(inp))
+      if (exitfound(inp)) /* wyjście ewakuacyjne */
       { return 0; }
       prepare(inp,128);
       a = atoi(inp);
       clear(inp);
       a1 = a;
-      hold = treesearch (root,a);
-      if (hold != NULL)
+      hold = treesearch (root,a); /* o czym my właściwie mówimy? */
+      if (hold != NULL) /* czy mamy o czym rozmawiać? */
       {
 
-        printsingle (hold);
+        printsingle (hold); /* wiemy co to jest */
 
         printf ("Czy chcesz zmienić nazwę macierzy? (t/n) ");
         fgets (inp,128,stdin);
-        if (exitfound(inp))
+        if (exitfound(inp)) /* wyjście ewakuacyjne */
         { return 0; }
         znak = inp[0];
         clear(inp);
-        if (znak == 't')
+        if (znak == 't') /* jak tak to łatwo podmieniamy nazwę */
         {
           printf ("Podaj nową nazwę.\n");
           fgets(name,16,stdin);
           for(i=0;i<16;i++){hold->record->name[i] = name[i];}
+          for(i=0;i<16;i++){name[i] = ' ';}
         } /* if (znak == 't') */
-        printf ("Czy chcesz zmienić index macierzy? (t/n) ");
+        printf ("Czy chcesz zmienić index macierzy? (t/n) "); /* zaczynają się schody */
         fgets (inp,128,stdin);
-        if (exitfound(inp))
+        if (exitfound(inp)) /* wyjście ewakuacyjne */
         { return 0; }
         znak = inp[0];
         clear(inp);
@@ -210,6 +218,7 @@ int main ()
             build->index = a; /* index */
             build->size = s; /* size */
             for(i=0;i<16;i++){build->name[i] = name[i];} /* name */
+            for(i=0;i<16;i++){name[i] = ' ';} /* Czyszczenie name po każdym użyciu */
 	          for(i=0;i<10;i++){for(j=0;j<10;j++)
             {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
             addnode(createnode(build),root);
@@ -228,6 +237,7 @@ int main ()
       else
       { printf("Nie ma takiego numeru. \n"); }
     break;
+    /* -------------------------------------------------------------------------------6 */
     case 6: /* INVERT */
       fflush(stdin);
       printf("Podaj indeks macierzy do odwrócenia ");
@@ -240,14 +250,85 @@ int main ()
       hold = treesearch(root,a);
       if (hold != NULL)
       {
-      inverter(hold->record->matrix,matrix,hold->record->size);
+      inverter(hold->record->matrix,matrix,hold->record->size);/* co, gdzie zapisać, jakiego rozmiaru to jest */
       printf("To jest macierz odwrotna\n");
       showarray(matrix,hold->record->size);
       }
     break;
+    /* -------------------------------------------------------------------------------7 */
     case 7: /* EXIT wyjście z programu */
       exit = 1;
     break;
+    /* -------------------------------------------------------------------------------8 */
+    case 8: /* save */
+      file = fopen("file.txt", "w");
+      basedump(file,root);
+      fclose(file);
+    break;
+    /* -------------------------------------------------------------------------------9 */
+    case 9: /* load */
+      file = fopen("file.txt", "r");
+      fgets(inp,128,file);
+      printinput (inp);
+      i=rewrite(inp,name);
+      printinput(inp);
+      i=rewrite(inp,name);
+      index = atoi(name);
+      fgets(name,16,file);
+      fgets(inp,128,file);
+      printinput(inp);
+      i=buildmatrix(inp,matrix);
+
+      build = NULL;
+      build = createrecord(key);
+      key++;
+      build->index=index;
+      for(i=0;i<16;i++){build->name[i] = name[i];}
+      for(i=0;i<10;i++){for(j=0;j<10;j++)
+        {build->matrix[i][j]=matrix[i][j];}}
+      addnode (createnode(build), root);
+      if (st)
+      {
+         hold = root;
+         root=root->right;
+         root->up=NULL;
+         st=0;
+         free (hold);
+      }
+
+    /*while(1)
+    {
+      fgets (inp,128, file);
+      i = rewrite(inp, name);
+      i = rewrite(inp,name);
+      index = atoi(name);
+      printf("%d \n", index);
+      if (index == 0)
+        break;
+      build = NULL;
+      build = createrecord(key);
+      key++;
+      fgets (name,16, file);
+      fgets (inp,128, file);
+      i = buildmatrix(inp,matrix);
+      clear(inp);
+      for(i=0;i<16;i++){build->name[i] = name[i];}
+      for(i=0;i<10;i++){for(j=0;j<10;j++)
+        {build->matrix[i][j]=matrix[i][j];}}
+      addnode (createnode(build), root);
+      addtolist(indexlist, createelement (index));
+      if (st)
+      {
+        hold = root;
+        root=root->right;
+        root->up=NULL;
+        st=0;
+        free (hold);
+      }
+    }*/
+    fclose(file);
+    break;
+    /* -------------------------------------------------------------------------------DEFAULT */
     default:
       printf("Nie podano zrozumiałej komendy. Spróbuj help.\n");
     break;

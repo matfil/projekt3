@@ -10,6 +10,7 @@
 
 database* createrecord (int key);
 node* createnode (struct database* dane);
+void basedump (FILE* file, node* root);
 void addnode (node* element, node* root);
 node* treesearch (node* root, int index);
 void printtree (node* root);
