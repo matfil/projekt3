@@ -19,7 +19,7 @@ void showarray(double tab[10][10],int n)
   {
     for(j = 0; j < n; j++)
     {
-      printf("%f ",tab[i][j]);
+      printf("%.0f ",tab[i][j]);
     }
     printf("\n");
   }
