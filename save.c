@@ -1,4 +1,5 @@
-#include "stdio.h"
+#include <stdio.h>
+#include "input.h"
 #include "structures.h"
 
 void basedump (FILE* file, node* root)
@@ -9,7 +10,7 @@ void basedump (FILE* file, node* root)
 
     basedump (file, root->right);
     basedump (file, root->left);
-    fprintf (file, "%d %d\n", root->record->key, root->record->index);
+    fprintf (file, "%d %d \n", root->record->key, root->record->index);
     fputs (root->record->name, file);
     fprintf (file, "[");
     for(i=0;i<root->record->size;i++)
@@ -27,3 +28,22 @@ void basedump (FILE* file, node* root)
   }
 }
 
+int getrecord (FILE* file, database* build)
+  {
+    char inp[128];
+    char name[16];
+    int i;
+    fgets(inp,128,file);
+    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+    rewrite(inp, name);
+    printf("%d\n",atoi(name));
+    rewrite(inp, name);
+    printf("%d\n",atoi(name));
+    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+    fgets(name,128,file);
+    for(i=0;i<16;i++){printf("%c",name[i]);}printf("\n");
+    fgets(inp,128,file);
+    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+    fgets(inp,128,file);
+    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+  }

@@ -268,7 +268,11 @@ int main ()
     break;
     /* -------------------------------------------------------------------------------9 */
     case 9: /* load */
+    
       file = fopen("file.txt", "r");
+      getrecord(file,build);
+    /*
+      
       fflush(file);
       fgets(inp,128,file);
       printinput (inp);
@@ -297,7 +301,7 @@ int main ()
          st=0;
          free (hold);
       }
-
+*/
       fclose(file);
     break;
     /* -------------------------------------------------------------------------------DEFAULT */
