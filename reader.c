@@ -31,3 +31,8 @@ void clear (char inp[128])
     inp[i] = ' ';
   }
 }
+
+void cutit (char inp[128])
+{
+  
+}

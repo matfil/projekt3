@@ -10,6 +10,7 @@
 #include "list.h"
 #include "input.h"
 #include "reader.h" 
+#include "save.h"
 #include "wyznacznik.h"
 
 int main ()
@@ -268,6 +269,7 @@ int main ()
     /* -------------------------------------------------------------------------------9 */
     case 9: /* load */
       file = fopen("file.txt", "r");
+      fflush(file);
       fgets(inp,128,file);
       printinput (inp);
       i=rewrite(inp,name);
@@ -296,37 +298,7 @@ int main ()
          free (hold);
       }
 
-    /*while(1)
-    {
-      fgets (inp,128, file);
-      i = rewrite(inp, name);
-      i = rewrite(inp,name);
-      index = atoi(name);
-      printf("%d \n", index);
-      if (index == 0)
-        break;
-      build = NULL;
-      build = createrecord(key);
-      key++;
-      fgets (name,16, file);
-      fgets (inp,128, file);
-      i = buildmatrix(inp,matrix);
-      clear(inp);
-      for(i=0;i<16;i++){build->name[i] = name[i];}
-      for(i=0;i<10;i++){for(j=0;j<10;j++)
-        {build->matrix[i][j]=matrix[i][j];}}
-      addnode (createnode(build), root);
-      addtolist(indexlist, createelement (index));
-      if (st)
-      {
-        hold = root;
-        root=root->right;
-        root->up=NULL;
-        st=0;
-        free (hold);
-      }
-    }*/
-    fclose(file);
+      fclose(file);
     break;
     /* -------------------------------------------------------------------------------DEFAULT */
     default:
