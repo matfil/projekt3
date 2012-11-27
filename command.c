@@ -57,13 +57,17 @@ int getcommand ()
     {
       return 9;
     }
+    if (inp[i] == 'a' && inp[i+1] == 'p' && inp[i+2] == 'p' && inp[i+3] == 'e' && inp[i+4] == 'n' && inp[i+5] == 'd')
+    {
+      return 10;
+    }
 	}
 	return -1;
 }
 
 void printhelp()
 {
-	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n print \n edit \n invert \n exit\n save\n load\n");
+	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n print \n edit \n invert \n exit\n save\n load\n append\n read\n");
 }
 
 
