@@ -2,7 +2,8 @@
 #define SAVE_H_
 
 void basedump (FILE* file, node* root);
-int getrecord (FILE* file, database* build);
+database* getrecord (FILE*);
+int saverecord (FILE*,database*); 
 
 #endif
 

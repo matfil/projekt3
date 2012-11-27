@@ -7,6 +7,7 @@
 
 #ifndef BSTREE_H_
 #define BSTREE_H_
+#include "structures.h"
 
 database* createrecord (int key);
 node* createnode (struct database* dane);

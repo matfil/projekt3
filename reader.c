@@ -34,5 +34,15 @@ void clear (char inp[128])
 
 void cutit (char inp[128])
 {
-  
+  int i;
+  int b;
+  b = 0;
+  for(i=0;i<128;i++)
+  {
+    if(b==0 && inp[i]!=']')
+    {continue;}
+    if(b==0 && inp[i]==']')
+    {b=1; continue;}
+    inp[i]=' ';
+  }
 }

@@ -9,6 +9,7 @@
 #define STRUCTURES_H 1
 #include <stdlib.h>
 
+
 typedef struct database
 {
   int key;

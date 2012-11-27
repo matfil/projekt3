@@ -37,7 +37,7 @@ node* createnode (struct database* dane)
 {
   node* newone;
   newone = malloc (sizeof(node));
-  newone -> record = dane; /*  */
+  newone -> record = dane; 
   newone -> up = NULL;
   newone -> left = NULL;
   newone -> right = NULL;

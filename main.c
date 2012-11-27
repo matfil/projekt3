@@ -3,15 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/stat.h>
 #include "structures.h"
 #include "bstree.h"
 #include "command.h"
 #include "invert.h"
 #include "list.h"
 #include "input.h"
-#include "reader.h" 
+#include "reader.h"
 #include "save.h"
 #include "wyznacznik.h"
+
 
 int main ()
 
@@ -19,8 +21,8 @@ int main ()
 
 
   printf("Program obsługujący bazę danych macierzy odwracalnych. \nAutor: Mateusz Filipiuk\n");
-  
-  
+
+
   int a, a1, exit, i, j, k, index, key, s, st;
   st = 1;
   char znak;
@@ -28,23 +30,24 @@ int main ()
   char name[16];
   double matrix[10][10];
   database* build;
-  node* hold;  
+  node* hold;
   node* root;
   list* indexlist; /* lista indexów */
 
   FILE* file;
-  
+  FILE* dump;
+
   root = NULL;
   indexlist = NULL;
 
   root = createnode(createrecord(0));
   root->record->index=0;
-  
+
   indexlist = createelement(0);
 
   key = 1; /* inicjacja klucza */
   exit = 0;
-  
+
   srand ( time(NULL) ); /* inicjacja generatora liczb losowych */
 
   while (exit != 1)
@@ -94,7 +97,7 @@ int main ()
       build = createrecord(key);
       key++;
       do
-      { 
+      {
         index = rand() % 10000;
       }while(checkindex(indexlist, index));
       build->index = index;
@@ -107,16 +110,16 @@ int main ()
       {build->matrix[i][j]=matrix[i][j];}}/* Przepisanie macierzy. */
       addnode (createnode(build), root);
       addtolist(indexlist, createelement (index));
-      if (st)/*bo dodawanie do drzewa działa dobrze 
+      if (st)/*bo dodawanie do drzewa działa dobrze
                z conajmniej 1 elementem*/
-      { 
+      {
         hold = root;
-        root=root->right; 
-        root->up=NULL; 
+        root=root->right;
+        root->up=NULL;
         st=0;
         free (hold);
       }
-      printf("wpisowi nadano klucz %d i index %d.\n", key-1, index); 
+      printf("wpisowi nadano klucz %d i index %d.\n", key-1, index);
     break;
     /* -------------------------------------------------------------------------------3 */
     case 3: /* PRINT'owanie całego drzewa */
@@ -130,12 +133,12 @@ int main ()
       if (znak == 'm')
       { dprint (root); }
       else
-      { 
+      {
         if (znak != 'r')
         {
           printf("\"nie wiem\" znaczy wylistować rosnąco\n");
         }
-        uprint (root); 
+        uprint (root);
       }
     break;
     /* -------------------------------------------------------------------------------4 */
@@ -207,7 +210,7 @@ int main ()
             for(i=0;i<16;i++){name[i] = hold->record->name[i];}
             for(i=0;i<10;i++){for(j=0;j<10;j++)
             {matrix[i][j]=hold->record->matrix[i][j];}}/* Przepisanie macierzy. */
-            nodedelete(treesearch (root, a1));/* niszczę stary który mógłby 
+            nodedelete(treesearch (root, a1));/* niszczę stary który mógłby
                                     psuć strukturę drzewa */
             if (root == NULL)
             {
@@ -225,10 +228,10 @@ int main ()
             addnode(createnode(build),root);
             if(st)
             {
-              hold = root; 
+              hold = root;
               root=root->right;
-              root->up = NULL; 
-              st=0; 
+              root->up = NULL;
+              st=0;
               free(hold);
             }
           }
@@ -268,41 +271,81 @@ int main ()
     break;
     /* -------------------------------------------------------------------------------9 */
     case 9: /* load */
-    
-      file = fopen("file.txt", "r");
-      getrecord(file,build);
-    /*
-      
-      fflush(file);
-      fgets(inp,128,file);
-      printinput (inp);
-      i=rewrite(inp,name);
-      printinput(inp);
-      i=rewrite(inp,name);
-      index = atoi(name);
-      fgets(name,16,file);
-      fgets(inp,128,file);
-      printinput(inp);
-      i=buildmatrix(inp,matrix);
 
+      fflush(stdin);
+      printf("Podaj nazwę pliku.\n");
+      scanf("%s",name);
+      fgets(inp,16,stdin); /* pobranie nazwy pliku */
+      file = fopen(name, "a");
+      fclose(file); /* tworzenie pliku jeśli go nie ma*/    
+      file = fopen(name, "r");
+      dump = fopen("dump.txt", "w");
       build = NULL;
-      build = createrecord(key);
-      key++;
-      build->index=index;
-      for(i=0;i<16;i++){build->name[i] = name[i];}
-      for(i=0;i<10;i++){for(j=0;j<10;j++)
-        {build->matrix[i][j]=matrix[i][j];}}
-      addnode (createnode(build), root);
-      if (st)
+      hold = NULL;
+      st = root->record->key == 0? 1: 0;
+      a = 0;
+      while(!(feof(file)))
       {
-         hold = root;
-         root=root->right;
-         root->up=NULL;
-         st=0;
-         free (hold);
+         build = getrecord(file);
+         if (build == NULL)
+         {break;}
+         if (checkindex(indexlist,build->index))
+          {
+            a = 1;
+            saverecord (dump, build);
+          }
+         else
+         {
+           build->key = key;
+           key++;
+           addnode (createnode(build), root);
+           addtolist(indexlist, createelement(build->index));
+           if (st)
+           {
+              hold = root;
+              root=root->right;
+              root->up=NULL;
+              st=0;
+              free (hold);
+           }
+         }
       }
-*/
+      fclose(dump);
+
+      if (a == 1)
+      {
+          printf("Znaleziono wpisy o indexach istniejących w bazie.\nCzy dodać je do bazy z nowymi indexami? (t/n)");
+          fgets(inp,128,stdin);
+          if (inp[0]=='t')
+          {
+              dump = fopen("dump.txt","r");
+              while(!(feof(dump)))
+                {
+                  build = getrecord(dump);
+                  if (build == NULL)
+                  {break;}
+                  do
+                  {
+                    index = rand() % 10000;
+                  }while(checkindex(indexlist, index));
+                  build->index = index;
+                  build->key=key;
+                  key++;
+                  addnode (createnode(build), root);
+                  addtolist(indexlist, createelement(build->index));
+
+                }
+          fclose(dump);
+          }
+
+      }
+      
       fclose(file);
+
+
+
+
+
     break;
     /* -------------------------------------------------------------------------------DEFAULT */
     default:
@@ -310,5 +353,5 @@ int main ()
     break;
     } /* switch ( getcommand() ) */
   } /* while (exit != 1) */
-  return 0; 
+  return 0;
 }

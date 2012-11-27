@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include "bstree.h"
 #include "input.h"
+#include "reader.h"
 #include "structures.h"
 
 void basedump (FILE* file, node* root)
@@ -28,22 +30,51 @@ void basedump (FILE* file, node* root)
   }
 }
 
-int getrecord (FILE* file, database* build)
+ database* getrecord (FILE* file)
   {
     char inp[128];
     char name[16];
-    int i;
+    double matrix[10][10];
+    int i, j;
+    database* build;
+
     fgets(inp,128,file);
-    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+    if (feof(file))
+    {
+      return NULL;
+    }    
     rewrite(inp, name);
-    printf("%d\n",atoi(name));
+    build = createrecord(atoi(name));/* przepisany klucz */
     rewrite(inp, name);
-    printf("%d\n",atoi(name));
-    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
-    fgets(name,128,file);
-    for(i=0;i<16;i++){printf("%c",name[i]);}printf("\n");
+    build->index = atoi(name);/* przepisany index */
+    fgets(name,16,file);
+    for(i=0;i<16;i++){build->name[i] = name[i];} /* name przepisane */
     fgets(inp,128,file);
-    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+    cutit(inp);
+    i = buildmatrix (inp,matrix);
+    build->size = i;
+    for(i=0;i<10;i++)for(j=0;j<10;j++)
+    {build->matrix[i][j] = matrix[i][j];}    
     fgets(inp,128,file);
-    for(i=0;i<128;i++){printf("%c",inp[i]);}printf("\n");
+    return build;
   }
+
+int saverecord (FILE* file, database* record)
+{
+
+    int i, j;
+    fprintf (file, "%d %d \n", record->key, record->index);
+    fputs (record->name, file);
+    fprintf (file, "[");
+    for(i=0;i<record->size;i++)
+    {
+      for(j=0;j<record->size;j++)
+      {
+        fprintf(file,"%g ",record->matrix[i][j]);
+      }
+      if (i+1 < record->size)
+        fprintf(file,";");
+    }
+    fprintf (file, "] \n");
+    fprintf (file, "%d \n", record->size);
+}
