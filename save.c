@@ -47,14 +47,20 @@ void basedump (FILE* file, node* root)
     build = createrecord(atoi(name));/* przepisany klucz */
     rewrite(inp, name);
     build->index = atoi(name);/* przepisany index */
-    fgets(name,16,file);
+    for(i=0;i<16;i++)name[i]=' ';
+    fgets(inp,128,file);sscanf(inp,"%s ",name);
     for(i=0;i<16;i++){build->name[i] = name[i];} /* name przepisane */
     fgets(inp,128,file);
     cutit(inp);
     i = buildmatrix (inp,matrix);
     build->size = i;
-    for(i=0;i<10;i++)for(j=0;j<10;j++)
-    {build->matrix[i][j] = matrix[i][j];}    
+    for(i=0;i<10;i++)
+    {
+      for(j=0;j<10;j++)
+      {
+        build->matrix[i][j] = matrix[i][j];
+      }
+    }    
     fgets(inp,128,file);
     return build;
   }
@@ -77,4 +83,5 @@ int saverecord (FILE* file, database* record)
     }
     fprintf (file, "] \n");
     fprintf (file, "%d \n", record->size);
+    return 0;
 }

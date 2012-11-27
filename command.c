@@ -61,7 +61,11 @@ int getcommand ()
     {
       return 10;
     }
-	}
+	    if (inp[i] == 'r' && inp[i+1] == 'e' && inp[i+2] == 'a' && inp[i+3] == 'd')
+    {
+      return 11;
+    }
+ }
 	return -1;
 }
 

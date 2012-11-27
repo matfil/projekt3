@@ -265,7 +265,22 @@ int main ()
     break;
     /* -------------------------------------------------------------------------------8 */
     case 8: /* save */
-      file = fopen("file.txt", "w");
+      fflush(stdin);
+      if (root->record->key == 0)
+      {
+        printf("Nie należy zapisywać pustej bazy\n");
+        break;
+      }
+      printf("Podaj nazwę pliku.\n");
+      scanf("%s",name);/* pobranie nazwy pliku */
+      if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+      {
+        printf("Ta nazwa jest zabroniona\n");
+        fgets(inp,16,stdin);/* usunięcie syfu po scanfie */
+        break;
+      }
+      fgets(inp,16,stdin);/* usunięcie syfu po scanfie */ 
+      file = fopen(name, "a");
       basedump(file,root);
       fclose(file);
     break;
@@ -274,33 +289,43 @@ int main ()
 
       fflush(stdin);
       printf("Podaj nazwę pliku.\n");
-      scanf("%s",name);
-      fgets(inp,16,stdin); /* pobranie nazwy pliku */
+      fgets(inp,128,stdin); sscanf(inp,"%s",name);/* pobranie 
+                                                     nazwy pliku */
+      if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+      {
+        printf("Ta nazwa jest zabroniona\n");
+        break;
+      }
       file = fopen(name, "a");
       fclose(file); /* tworzenie pliku jeśli go nie ma*/    
       file = fopen(name, "r");
-      dump = fopen("dump.txt", "w");
+      dump = fopen("dump.txt", "w");/* plik do składowania rekordów
+                                       z powtarzającymi się indeksami */
       build = NULL;
       hold = NULL;
-      st = root->record->key == 0? 1: 0;
-      a = 0;
-      while(!(feof(file)))
+      st = root->record->key == 0? 1: 0; /* czy nie wczytujemy bazy 
+                                            od nowa? */
+      a = 0;/* przechowywanie informacji o powtarzających się
+               indeksach */
+      while(!(feof(file)))/* dopóki jest co czytać */
       {
-         build = getrecord(file);
-         if (build == NULL)
+         build = getrecord(file);/* pobierz rekord */
+         if (build == NULL) /* sprawdź czy się udało */
          {break;}
-         if (checkindex(indexlist,build->index))
+         if (checkindex(indexlist,build->index))/* czy ten indeks
+                                                   już wystąpił? */
           {
-            a = 1;
-            saverecord (dump, build);
+            a = 1; /* zapamiętajmy, że coś trafiło do dumpa */
+            saverecord (dump, build); /* zapiszmy ten element do dumpa */
           }
          else
          {
-           build->key = key;
-           key++;
-           addnode (createnode(build), root);
-           addtolist(indexlist, createelement(build->index));
-           if (st)
+           build->key = key; /* przydzielany jest nowy klucz */
+           key++; /* inkrementacja */
+           addnode (createnode(build), root); /* dodanie do drzewa */
+           addtolist(indexlist, createelement(build->index)); /* listy */
+           if (st) /* jak dodawany jako węzeł numer 1 to wyrzućmy 
+                      strażnika z miejsca roota */
            {
               hold = root;
               root=root->right;
@@ -311,14 +336,13 @@ int main ()
          }
       }
       fclose(dump);
-
-      if (a == 1)
+      if (a == 1)/* jak coś jest w dumpie */
       {
           printf("Znaleziono wpisy o indexach istniejących w bazie.\nCzy dodać je do bazy z nowymi indexami? (t/n)");
           fgets(inp,128,stdin);
           if (inp[0]=='t')
           {
-              dump = fopen("dump.txt","r");
+              dump = fopen("dump.txt","r");/* czytamy z dumpa */
               while(!(feof(dump)))
                 {
                   build = getrecord(dump);
@@ -326,28 +350,61 @@ int main ()
                   {break;}
                   do
                   {
-                    index = rand() % 10000;
+                    index = rand() % 10000; /* szukamy nowych indexów */
                   }while(checkindex(indexlist, index));
                   build->index = index;
-                  build->key=key;
+                  build->key=key;/* nadajemy nowy klucz */
                   key++;
-                  addnode (createnode(build), root);
+                  addnode (createnode(build), root);/* dodajemy do
+                                                       drzewa */
                   addtolist(indexlist, createelement(build->index));
-
                 }
           fclose(dump);
           }
-
       }
-      
       fclose(file);
-
-
-
-
-
     break;
-    /* -------------------------------------------------------------------------------DEFAULT */
+    /* -------------------------------------------------------------------------------10 */ 
+    case 10: /* append */
+      fflush(stdin);
+      node* whatusave;
+      do 
+      {
+        printf("Który rekord zapisać? ");
+        fgets(inp,128,stdin);
+        prepare(inp,128);
+        whatusave = treesearch(root,atoi(inp));
+      }while(whatusave == NULL);      
+      printf("Podaj nazwę pliku.\n");
+      fgets(inp,128,stdin); sscanf(inp,"%s",name);
+      if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+      {
+        printf("Ta nazwa jest zabroniona\n");
+        break;
+      }
+      file = fopen(name, "a");
+      saverecord (file,whatusave->record);
+      fclose(file);
+    break;
+    /* -------------------------------------------------------------------------------11 */
+    case 11: /* read */
+      printf("Podaj nazwę pliku.\n");
+      fgets(inp,128,stdin); sscanf(inp,"%s",name);
+      file = fopen(name, "a");
+      fclose(file);
+      file = fopen(name, "r");
+      node* whaturead;
+      whaturead = malloc(sizeof(node));
+      while(!(feof(file)))
+      {
+      whaturead->record = getrecord(file);
+      if (whaturead->record == NULL)
+      {break;}
+      printsingle(whaturead);
+      }
+      free(whaturead);
+    break;
+   /* -------------------------------------------------------------------------------DEFAULT */
     default:
       printf("Nie podano zrozumiałej komendy. Spróbuj help.\n");
     break;
