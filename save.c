@@ -51,6 +51,7 @@ void basedump (FILE* file, node* root)
     fgets(inp,128,file);sscanf(inp,"%s ",name);
     for(i=0;i<16;i++){build->name[i] = name[i];} /* name przepisane */
     fgets(inp,128,file);
+    printf("%s",inp);
     cutit(inp);
     i = buildmatrix (inp,matrix);
     build->size = i;
