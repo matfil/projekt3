@@ -8,13 +8,9 @@
  */
 
 #include <stdio.h>
-int getcommand ()
+int getcommand (char inp[128])
 {
-	char inp[128];
 	int i;
-
-	fgets(inp,128,stdin);
-
 	for (i = 0;i < 124;i++)
 	{
 		if (inp[i] == 'h' && inp[i+1] == 'e' && inp[i+2] == 'l' && inp[i+3] == 'p')
@@ -71,7 +67,7 @@ int getcommand ()
 
 void printhelp()
 {
-	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n print \n edit \n invert \n exit\n save\n load\n append\n read\n");
+	printf("Lista możliwych poleceń: \n help \n add \n erase \n show \n print \n edit \n invert \n exit\n save <nazwa pliku>\n load <nazwa pliku>\n append <indeks> <nazwa pliku>\n read <nazwa pliku>\n");
 }
 
 

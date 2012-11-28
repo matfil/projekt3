@@ -13,7 +13,8 @@ void basedump (FILE* file, node* root)
     basedump (file, root->right);
     basedump (file, root->left);
     fprintf (file, "%d %d \n", root->record->key, root->record->index);
-    fputs (root->record->name, file);
+    printable(root->record->name);
+    fprintf (file,"%s\n",root->record->name);
     fprintf (file, "[");
     for(i=0;i<root->record->size;i++)
     {
@@ -48,10 +49,9 @@ void basedump (FILE* file, node* root)
     rewrite(inp, name);
     build->index = atoi(name);/* przepisany index */
     for(i=0;i<16;i++)name[i]=' ';
-    fgets(inp,128,file);sscanf(inp,"%s ",name);
+    fgets(inp,128,file);sscanf(inp," %s ",name);
     for(i=0;i<16;i++){build->name[i] = name[i];} /* name przepisane */
     fgets(inp,128,file);
-    printf("%s",inp);
     cutit(inp);
     i = buildmatrix (inp,matrix);
     build->size = i;
@@ -71,7 +71,10 @@ int saverecord (FILE* file, database* record)
 
     int i, j;
     fprintf (file, "%d %d \n", record->key, record->index);
-    fputs (record->name, file);
+    /* fputs (record->name, file); */
+    printable(record->name);
+    fprintf(file,"%s\n",record->name);
+    /*puts (record->name);*/
     fprintf (file, "[");
     for(i=0;i<record->size;i++)
     {
@@ -86,3 +89,5 @@ int saverecord (FILE* file, database* record)
     fprintf (file, "%d \n", record->size);
     return 0;
 }
+
+

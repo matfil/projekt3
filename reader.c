@@ -23,6 +23,18 @@ void prepare (char inp[],int n)
 }
 /*teraz atoi() z stdlib.h*/
 
+void printable (char inp[16])
+{
+  int i;
+  for(i=0;i<16;i++)
+  {
+    if (inp[i]<32 || inp[i]>126)
+    {
+      inp[i] = ' ';
+    }
+  }
+}
+
 void clear (char inp[128])
 {
   int i;

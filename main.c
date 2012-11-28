@@ -26,7 +26,8 @@ int main ()
   int a, a1, exit, i, j, k, index, key, s, st;
   st = 1;
   char znak;
-  char inp[128];
+  char inp[128]; 
+  char b[40];
   char name[16];
   double matrix[10][10];
   database* build;
@@ -54,7 +55,8 @@ int main ()
   {
     fflush(stdin);
     printf("Podaj komendę. \n");
-    switch ( getcommand() )  /* pobranie komendy */
+    fgets(inp,128,stdin);
+    switch ( getcommand(inp) )  /* pobranie komendy */
     {
     case 0: /* wyświetlanie HELP'a */
       printhelp();
@@ -271,15 +273,16 @@ int main ()
         printf("Nie należy zapisywać pustej bazy\n");
         break;
       }
-      printf("Podaj nazwę pliku.\n");
-      scanf("%s",name);/* pobranie nazwy pliku */
+      for(i=0;i<16;i++)
+      {name[i]=' ';}
+      i=0;
+      sscanf(inp,"%s %s",b,name); /* pobranie nazwy pliku */
       if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
       {
         printf("Ta nazwa jest zabroniona\n");
         fgets(inp,16,stdin);/* usunięcie syfu po scanfie */
         break;
       }
-      fgets(inp,16,stdin);/* usunięcie syfu po scanfie */ 
       file = fopen(name, "a");
       basedump(file,root);
       fclose(file);
@@ -288,9 +291,10 @@ int main ()
     case 9: /* load */
 
       fflush(stdin);
-      printf("Podaj nazwę pliku.\n");
-      fgets(inp,128,stdin); sscanf(inp,"%s",name);/* pobranie 
-                                                     nazwy pliku */
+      for(i=0;i<16;i++)
+      {name[i]=' ';}
+      i=0;
+      sscanf(inp,"%s %s",b,name);/* pobranie nazwy pliku */
       if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
       {
         printf("Ta nazwa jest zabroniona\n");
@@ -368,31 +372,34 @@ int main ()
     case 10: /* append */
       fflush(stdin);
       node* whatusave;
-      do 
-      {
-        printf("Który rekord zapisać? ");
-        fgets(inp,128,stdin);
-        prepare(inp,128);
-        whatusave = treesearch(root,atoi(inp));
-      }while(whatusave == NULL);      
-      printf("Podaj nazwę pliku.\n");
-      fgets(inp,128,stdin); sscanf(inp,"%s",name);
-      if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
-      {
-        printf("Ta nazwa jest zabroniona\n");
-        break;
+      for(i=0;i<16;i++)
+      {name[i]=' ';}
+      i=0;
+      sscanf(inp,"%s %d %s",b,&i,name);
+      whatusave = treesearch(root,i);
+      if (whatusave != NULL)
+      {      
+        if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+        {
+           printf("Ta nazwa jest zabroniona\n");
+           break;
+        }
+        file = fopen(name, "a");
+        saverecord (file,whatusave->record);
+        fclose(file);
+
       }
-      file = fopen(name, "a");
-      saverecord (file,whatusave->record);
-      fclose(file);
+
     break;
     /* -------------------------------------------------------------------------------11 */
     case 11: /* read */
-      printf("Podaj nazwę pliku.\n");
-      fgets(inp,128,stdin); sscanf(inp,"%s",name);
-      file = fopen(name, "a");
+      for(i=0;i<16;i++)
+      {name[i]=' ';}
+      i=0;
+      sscanf(inp,"%s %s",b,name);
+      file = fopen(name, "ab");
       fclose(file);
-      file = fopen(name, "r");
+      file = fopen(name, "rb");
       node* whaturead;
       whaturead = malloc(sizeof(node));
       while(!(feof(file)))
