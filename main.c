@@ -55,6 +55,8 @@ int main ()
   {
     fflush(stdin);
     printf("Podaj komendę. \n");
+    for(i=0;i<128;i++)
+    {inp[i]=' ';}
     fgets(inp,128,stdin);
     switch ( getcommand(inp) )  /* pobranie komendy */
     {
@@ -277,7 +279,7 @@ int main ()
       {name[i]=' ';}
       i=0;
       sscanf(inp,"%s %s",b,name); /* pobranie nazwy pliku */
-      if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+      if ((name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't') || (name[0] == ' ' && name[1] == ' ' && name[2] == ' ' && name[3] == ' ' && name[4] == ' ' && name[5] == ' ' && name[6] == ' ' && name[7] == ' '))
       {
         printf("Ta nazwa jest zabroniona\n");
         fgets(inp,16,stdin);/* usunięcie syfu po scanfie */
@@ -295,7 +297,7 @@ int main ()
       {name[i]=' ';}
       i=0;
       sscanf(inp,"%s %s",b,name);/* pobranie nazwy pliku */
-      if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+      if ((name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't') || (name[0] == ' ' && name[1] == ' ' && name[2] == ' ' && name[3] == ' ' && name[4] == ' ' && name[5] == ' ' && name[6] == ' ' && name[7] == ' ') )
       {
         printf("Ta nazwa jest zabroniona\n");
         break;
@@ -379,7 +381,7 @@ int main ()
       whatusave = treesearch(root,i);
       if (whatusave != NULL)
       {      
-        if (name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't' )
+        if ((name[0] == 'd' && name[1] == 'u' && name[2] == 'm' && name[3] == 'p' && name[4] == '.' && name[5] == 't' && name[6] == 'x' && name[7] == 't')|| (name[0] == ' ' && name[1] == ' ' && name[2] == ' ' && name[3] == ' ' && name[4] == ' ' && name[5] == ' ' && name[6] == ' ' && name[7] == ' ') )
         {
            printf("Ta nazwa jest zabroniona\n");
            break;
